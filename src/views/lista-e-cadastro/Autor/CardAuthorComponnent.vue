@@ -2,13 +2,13 @@
     <div>
         
         <b-card                    
-            :img-src="capa"
+            :img-src="foto"
             img-alt="Card image cap"
             img-top                                  
-            :title="titulo" 
+            :title="nome" 
         >           
             <b-card-text>           
-                {{sinopse}}
+                {{descricao}}
             </b-card-text>
             
             <!-- BOTAO -->
@@ -104,18 +104,15 @@ export default {
 
     data(){
         return {
-            livro: ' ',
-        mainProps: {                 
-          height: 200,         
-        }
+            author: ' ',        
       }
     },  
    
 
     props:[
-        'titulo',
-        'sinopse',
-        'capa'
+        'nome',
+        'descricao',
+        'foto'
     ],
 
 }
