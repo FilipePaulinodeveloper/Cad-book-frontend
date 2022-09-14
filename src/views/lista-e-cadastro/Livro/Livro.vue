@@ -1,6 +1,6 @@
 <template>
     <div>
-      <b-row class="d-flex justify-content-end">
+      <b-row class="d-flex justify-content-center">
         <b-col 
         md = "6"
         lg = "6"
@@ -9,35 +9,13 @@
             <b-input-group class="mb-2">
               <b-form-input placeholder="Pesquisar nome do livro" />
                   <b-input-group-append>
-                    <b-button variant="outline-primary">
+                    <b-button variant="outline-primary" @click="filtrar">
                           <feather-icon icon="SearchIcon" />
                     </b-button>
               </b-input-group-append>
             </b-input-group>
             
-        </b-col>
-
-        <b-col md="3">   
-            <b-form-group>
-                  <v-select
-                    v-model="selected"
-                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                    label="title"
-                    :options="option"
-                  />
-            </b-form-group>
-        </b-col>
-
-        <b-col md="3">   
-          <b-form-group>
-                <v-select
-                  v-model="selected"
-                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                  label="title"
-                  :options="option"
-                />
-          </b-form-group>
-        </b-col>
+        </b-col>      
        
       </b-row>
       <b-row class="match-height">  
@@ -103,8 +81,11 @@ export default {
     Ripple,
   },
 
+  
+
   data() {
     return {
+      filtrolivro: ' ' ,
       campos: [
         
         {
@@ -141,9 +122,25 @@ export default {
       livros: [
 
       ],
+
+      filtrolivros:[
+        
+      ],
+
+    }    
+    
+    
+  },
+  
+  methods: {
+    filtrar(filtrolivros) {
+
+     this.teste = this.livro.length
+
+    //  console.log(this.filtrolivros);
+      console.log(this.teste);
     }
   },
-
 
 
   created()
@@ -152,6 +149,12 @@ export default {
     .then(response => {
       console.table(response.data.data)
       this.livros = response.data.data
+    })
+
+     this.$http.get("bookfiltertitle/{{title}}/books")
+    .then(response => {
+      console.table(response.data.data)
+      this.filtrolivros = response.data.data
     })
   }
 
