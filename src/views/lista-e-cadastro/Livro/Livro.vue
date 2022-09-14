@@ -7,9 +7,9 @@
         sm="12"
         >
             <b-input-group class="mb-2">
-              <b-form-input placeholder="Pesquisar nome do livro" />
+              <b-form-input placeholder="Pesquisar nome do livro" v-model="search" />
                   <b-input-group-append>
-                    <b-button variant="outline-primary" @click="filtrar">
+                    <b-button variant="outline-primary" @click="searchLivro">
                           <feather-icon icon="SearchIcon" />
                     </b-button>
               </b-input-group-append>
@@ -26,7 +26,8 @@
           v-for="livroItem in livros"
           :key="livroItem.id"
         >
-        
+
+
           <CardBook 
               :livro = 'livroItem'
               :titulo= 'livroItem.title'
@@ -85,7 +86,9 @@ export default {
 
   data() {
     return {
-      filtrolivro: ' ' ,
+      search: ' ' ,
+      showsearch:false,
+      caris:[],
       campos: [
         
         {
@@ -126,6 +129,8 @@ export default {
       filtrolivros:[
         
       ],
+
+
 
     }    
     
