@@ -9,41 +9,105 @@
             <b-input-group class="mb-2">
               <b-form-input placeholder="Pesquisar nome do livro" v-model="search" />
                   <b-input-group-append>
-                    <b-button variant="outline-primary" @click="searchLivro">
+                    <b-button variant="outline-primary" @click.prevent="searchlivros()">
                           <feather-icon icon="SearchIcon" />
                     </b-button>
               </b-input-group-append>
             </b-input-group>
             
-        </b-col>      
-       
-      </b-row>
-      <b-row class="match-height">  
-        
+        </b-col> 
+
+      <div v-if="search">
         <b-col
-          md="6"
-          lg="4"      
-          v-for="livroItem in livros"
-          :key="livroItem.id"
+        lg="3"
         >
+        <b-button variant="outline-primary"  @click.prevent="limparfiltro()">              
+               <feather-icon icon="XCircleIcon" />                
+        </b-button>
+
+        </b-col>             
+       </div>  
+
+        <b-col
+            md="6"
+            lg="3"                       
+          >          
+
+                <b-button                            
+                  variant="outline-primary"
+                  class=" btn"
+                  v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                >                                                     
+                            <router-link :to="{name: 'cad-livro'}" > 
+                              <span>Cadastrar livro</span>  
+
+                                <feather-icon icon="BookOpenIcon" />
+                            </router-link>
+                </b-button> 
+
+          </b-col>         
+    
+
+      </b-row>
+
+    
+      <b-row class="match-height">          
+          <b-col
+            md="6"
+            lg="4"      
+            v-for="livroItem in livros"
+            :key="livroItem.id"            
+          >          
+            <CardBook 
+                :livro = 'livroItem'
+                :titulo= 'livroItem.title'
+                :sinopse= 'livroItem.sinopse'
+                :capa = 'livroItem.book_photo'
+            />
+          </b-col>         
+       </b-row>          
+
+        <div v-if="livros == '' ">
+          <b-row class="d-flex justify-content-center">
+                <b-col 
+                md = "12"
+                lg = "12"
+                sm="12"
+                >
+              <b-alert
+                variant="danger"
+                show
+              >
+                <h4 class="alert-heading">
+                  ERRO
+                </h4>
+                <div class="alert-body">
+                  <span>Não foi possivel encontrar um livro, tente cadastrar um </span>                  
+                </div>
+              </b-alert>
+                 <b-button                            
+                            variant="outline-primary"
+                            class=" btn mt-1 "
+                            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                        >                                                     
+                            <router-link :to="{name: 'cad-livro'}" > 
+                              <span>Cadastrar livro</span>  
+
+                                <feather-icon icon="BookOpenIcon" />
+                            </router-link>
+                        </b-button> 
+               </b-col>
+              </b-row>          
+          </div>
+
+             
+            
+               
 
 
-          <CardBook 
-              :livro = 'livroItem'
-              :titulo= 'livroItem.title'
-              :sinopse= 'livroItem.sinopse'
-              :capa = 'livroItem.book_photo'
-          />
-
-        </b-col>
-
-           
-        
-         
-
-      
-      </b-row>          
- 
+          
+             
+   
      
 
       <!-- <b-table  
@@ -64,7 +128,8 @@ import {
   BCard, BCardText, BButton, BRow, BCol, BImg, BCardBody, BCardTitle, BCardSubTitle, BLink,
   BTable, 
   BInputGroup, BFormInput, BInputGroupAppend, BInputGroupPrepend,
-  BFormGroup
+  BFormGroup,
+  BAlert
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import CardBook from './CardBookComponnent.vue'
@@ -76,6 +141,7 @@ export default {
     BTable,CardBook,
     BInputGroup, BFormInput, BInputGroupAppend, BInputGroupPrepend,
     BFormGroup,
+    BAlert,
     vSelect
   },
   directives: {
@@ -88,7 +154,7 @@ export default {
     return {
       search: ' ' ,
       showsearch:false,
-      caris:[],
+            
       campos: [
         
         {
@@ -126,9 +192,7 @@ export default {
 
       ],
 
-      filtrolivros:[
-        
-      ],
+      
 
 
 
@@ -138,12 +202,19 @@ export default {
   },
   
   methods: {
-    filtrar(filtrolivros) {
-
-     this.teste = this.livro.length
-
-    //  console.log(this.filtrolivros);
-      console.log(this.teste);
+    searchlivros() {                    
+       this.$http.get("bookfiltertitle/"+this.search+"/books")
+        .then(response => {
+          
+          this.livros = response.data.data
+          
+        })      
+    },
+    limparfiltro(){
+        this.$http.get("book/")
+    .then(response => {    
+      this.livros = response.data.data
+    })
     }
   },
 
@@ -156,14 +227,15 @@ export default {
       this.livros = response.data.data
     })
 
-     this.$http.get("bookfiltertitle/{{title}}/books")
-    .then(response => {
-      console.table(response.data.data)
-      this.filtrolivros = response.data.data
-    })
+    //  this.$http.get("bookfiltertitle/{{title}}/books")
+    // .then(response => {
+    //   console.table(response.data.data)
+    //   this.filtrolivros = response.data.data
+    // })
   }
 
 }
+
 </script>
 
 <style>
