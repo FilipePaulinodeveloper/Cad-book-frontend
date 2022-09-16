@@ -75,11 +75,11 @@
                 sm="12"
                 >
               <b-alert
-                variant="danger"
+                variant="warning"
                 show
               >
                 <h4 class="alert-heading">
-                  ERRO
+                  Mensagem:
                 </h4>
                 <div class="alert-body">
                   <span>Não foi possivel encontrar um livro, tente cadastrar um </span>                  
@@ -190,11 +190,7 @@ export default {
     
       livros: [
 
-      ],
-
-      
-
-
+      ],   
 
     }    
     
@@ -203,7 +199,7 @@ export default {
   
   methods: {
     searchlivros() {                    
-       this.$http.get("bookfiltertitle/"+this.search+"/books")
+       this.$http.get("bookfiltertitle/"+this.search.trim()+"/books")
         .then(response => {
           
           this.livros = response.data.data
@@ -226,12 +222,7 @@ export default {
       console.table(response.data.data)
       this.livros = response.data.data
     })
-
-    //  this.$http.get("bookfiltertitle/{{title}}/books")
-    // .then(response => {
-    //   console.table(response.data.data)
-    //   this.filtrolivros = response.data.data
-    // })
+ 
   }
 
 }

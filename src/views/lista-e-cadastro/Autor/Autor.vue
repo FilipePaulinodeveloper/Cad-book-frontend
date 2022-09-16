@@ -29,39 +29,7 @@
         </b-button>
 
         </b-col>             
-       </div>  
-        <div v-if="livros == '' ">
-          <b-row class="d-flex justify-content-center">
-                <b-col 
-                md = "12"
-                lg = "12"
-                sm="12"
-                >
-              <b-alert
-                variant="danger"
-                show
-              >
-                <h4 class="alert-heading">
-                  ERRO
-                </h4>
-                <div class="alert-body">
-                  <span>Não foi possivel encontrar um livro, tente cadastrar um </span>                  
-                </div>
-              </b-alert>
-                 <b-button                            
-                            variant="outline-primary"
-                            class=" btn mt-1 "
-                            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                        >                                                     
-                            <router-link :to="{name: 'cad-livro'}" > 
-                              <span>Cadastrar livro</span>  
-
-                                <feather-icon icon="BookOpenIcon" />
-                            </router-link>
-                        </b-button> 
-               </b-col>
-              </b-row>          
-          </div>
+       </div>        
 
           <b-col
             md="6"
@@ -90,11 +58,11 @@
                 sm="12"
                 >
               <b-alert
-                variant="danger"
+                variant="warning"
                 show
               >
                 <h4 class="alert-heading">
-                  ERRO
+                  Mensagem:
                 </h4>
                 <div class="alert-body">
                   <span>Não foi possivel encontrar um autor, tente cadastrar um </span>                  

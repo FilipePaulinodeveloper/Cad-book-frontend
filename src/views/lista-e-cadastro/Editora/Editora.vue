@@ -69,13 +69,8 @@
               :foto = 'editoraItem.publishing_company_photo'
           />
 
-        </b-col>
+        </b-col>                 
 
-           
-        
-         
-
-      
       </b-row>    
 
             <div v-if="editoras == '' ">
@@ -86,11 +81,11 @@
                 sm="12"
                 >
               <b-alert
-                variant="danger"
+                variant="warning"
                 show
               >
                 <h4 class="alert-heading">
-                  ERRO
+                  Mensagem:
                 </h4>
                 <div class="alert-body">
                   <span>Não foi possivel encontrar uma editora, tente cadastrar uma </span>                  

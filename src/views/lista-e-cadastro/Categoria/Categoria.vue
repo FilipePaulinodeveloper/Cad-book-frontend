@@ -79,11 +79,11 @@
                 sm="12"
                 >
               <b-alert
-                variant="danger"
+                variant="warning"
                 show
               >
                 <h4 class="alert-heading">
-                  ERRO
+                  Mensagem:
                 </h4>
                 <div class="alert-body">
                   <span>Não foi possivel encontrar uma Categoria, tente cadastrar uma</span>                  
