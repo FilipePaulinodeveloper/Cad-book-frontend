@@ -162,7 +162,7 @@ const router = new VueRouter({
     },
 
     {
-      path: '/Edit-autor',
+      path: '/edit-autor/:id',
       name: 'edit-autor',
       component: () => import('@/views/lista-e-cadastro/Autor/Edit-autor.vue'),
       meta: {
@@ -175,7 +175,7 @@ const router = new VueRouter({
         ],
       },
     },
-
+   
     {
       path: '/login',
       name: 'login',

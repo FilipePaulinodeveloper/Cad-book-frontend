@@ -11,6 +11,7 @@ import './global-components'
 
 // 3rd party plugins
 import '@/libs/portal-vue'
+import '@/libs/sweet-alerts'
 import '@/libs/toastification'
 
 // BSV Plugin Registration

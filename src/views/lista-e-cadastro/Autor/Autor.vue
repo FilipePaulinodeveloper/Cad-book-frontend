@@ -91,10 +91,12 @@
         >
           
           <AuthorComponnent
+              :codigo = 'autorItem.id'
               :autor = 'autorItem'
               :nome= 'autorItem.name'
               :descricao= 'autorItem.description'
               :foto = 'autorItem.author_photo'
+              @afterDeleting = 'afterDeleting'
           />
 
         </b-col>
@@ -154,7 +156,7 @@ export default {
         
         {
           key: 'id',
-          label: 'Código',        
+          label: 'codigo',        
         }, 
         {
           key: 'name',
@@ -192,6 +194,13 @@ export default {
     .then(response => {    
       this.autores = response.data.data
     })
+    },
+
+    afterDeleting(){
+       this.$http.get("author/")
+      .then(response => {     
+        this.autores = response.data.data
+      })
     }
   },
 

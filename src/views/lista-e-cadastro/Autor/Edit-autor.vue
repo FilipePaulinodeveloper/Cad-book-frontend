@@ -3,7 +3,7 @@
   <div>    
     <b-card>
       <validation-observer ref="simpleRules">
-        <b-form @submit.prevent="validationForm">
+        <b-form @submit.prevent="cadastrarAutor">
           <b-row>
             <b-col md="6">
               <b-form-group label="Nome do autor" label-for="nome">
@@ -14,30 +14,14 @@
                 >
                   <b-form-input
                     v-model="nome"
-                    id="nome"
-                    placeholder="Nome do autor"
+                    id="nome"                                                    
                   />
                   <small class="text-danger">{{ errors[0] }}</small>
                 </validation-provider>
               </b-form-group>
-            </b-col>            
-            
-            <b-col md="6">
-              <validation-provider
-                #default="{ errors }"
-                name="Foto do autor"
-                
-              >
-                <b-form-group label="Foto do autor" label-for="authorPhoto">
-                  <b-form-file
-                    v-model="foto"
-                    id="authorPhoto"
-                    accept="image/*"
-                  />
-                </b-form-group>
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-col>
+            </b-col>                        
+
+
 
             <b-col md="12">
               <b-form-group label="Descricao do autor" label-for="description">
@@ -66,7 +50,7 @@
                 v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                 type="submit"
                 variant="primary"
-                class="mr-1"
+                class="mr-1"               
               >
                 Enviar
               </b-button>
@@ -94,6 +78,7 @@ import {
 } from "bootstrap-vue";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "@validations";
+import router from '@/router'
 import vSelect from "vue-select";
 
 import Ripple from "vue-ripple-directive";
@@ -114,6 +99,7 @@ export default {
     required,
     ValidationObserver,
     vSelect,
+    
   },
   directives: {
     Ripple,
@@ -122,34 +108,54 @@ export default {
   data() {
     return {
       required,
-      id: this.id = '',
-      nome: (this.nome = ""),
-      foto: (this.foto = ""),
-      descricao: (this.descricao = ""),    
+
+      nome:"",
+       foto:"",
+      descricao:"",
+
+      autor:[]
 
     };
   },
 
   methods: {
-    validationForm() {
-      console.log('teste')
+    cadastrarAutor() {
+      let id =  router.currentRoute.params.id ;         
       var campos = {
         id: this.id,
         name: this.nome,
         author_photo: this.foto,
-        description: this.descricao,       
+        description: this.descricao,              
       };
 
       this.$refs.simpleRules.validate().then((success) => {
         if (success) {
-          this.$http.put("author/", campos).then((response) => {
-            alert("DEU CERTO");
+          this.$http.post("author/", campos).then((response) => {  
+           alert('deu certo')
           });
         }
       });
     },
+    
   },  
+  created()
+  {
+    let id =  router.currentRoute.params.id ;
+    this.$http.get("author/"+id)
+    .then(response => {    
+       this.nome = response.data.data.data.name
+        this.foto = response.data.data.data.author_photo
+        this.descricao = response.data.data.data.description
+    })    
+    // this.$http.get("author/").then((response) => {
+    //     this.nome = response.data.data.name
+    //    this.foto = response.data.data.author_photo
+    //     this.descricao = response.data.data.description
+    // });
+  }
+
 };
+
 </script>
 
 <style lang="scss">

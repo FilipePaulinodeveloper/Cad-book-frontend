@@ -38,7 +38,7 @@
                             class=" btn-icon mt-1 mb-1"
                             v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                         >
-                            <router-link :to="{name: 'home'}" >     
+                            <router-link :to="{name: 'edit-autor', params: { id:codigo } }" >     
                                 <feather-icon icon="EditIcon" />
                             </router-link>          
 
@@ -54,10 +54,10 @@
                             variant="outline-primary"
                             class=" btn-icon mt-1 "
                             v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                        >                                                     
-                            <router-link :to="{name: 'home'}" >      
-                                <feather-icon icon="TrashIcon" />
-                            </router-link>
+                            @click="deletar(codigo)"
+                        >                                                  
+                         <feather-icon icon="TrashIcon" />
+                            
                         </b-button>  
 
 <!-- 
@@ -93,6 +93,7 @@ import {
 } from 'bootstrap-vue'
 
 import Ripple from 'vue-ripple-directive'
+import { props } from 'vue-prism-component'
 
 export default {
     components: {
@@ -104,20 +105,58 @@ export default {
 
     data(){
         return {
-            author: ' ',        
+            author: ' ',   
+              
       }
+      
     },  
    
 
     props:[
+        'codigo',
         'nome',
         'descricao',
         'foto'
     ],
+    
+
+    methods:{
+        deletar(codigo) {                       
+            this.$swal({            
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                customClass: {
+                confirmButton: 'btn btn-primary',
+                cancelButton: 'btn btn-outline-danger ml-1',
+                },
+                buttonsStyling: false,
+            }).then(result => {
+                if (result.value) {
+                    this.$http.delete("author/"+codigo)
+                    .then(
+                        this.$emit('afterDeleting')
+                    )       
+                this.$swal({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Your file has been deleted.',
+                    customClass: {
+                    confirmButton: 'btn btn-success',
+                    },
+                })
+                }
+            })
+          
+      
+        }
+    }
 
 }
 </script>
 
-<style>
-
+<style lang="scss">
+@import '@core/scss/vue/libs/vue-sweetalert.scss';
 </style>
