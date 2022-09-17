@@ -122,7 +122,7 @@ export default {
   data() {
     return {
       required,
-
+      id: this.id = '',
       nome: (this.nome = ""),
       foto: (this.foto = ""),
       descricao: (this.descricao = ""),    
@@ -132,7 +132,9 @@ export default {
 
   methods: {
     validationForm() {
+      console.log('teste')
       var campos = {
+        id: this.id,
         name: this.nome,
         author_photo: this.foto,
         description: this.descricao,       
@@ -140,7 +142,7 @@ export default {
 
       this.$refs.simpleRules.validate().then((success) => {
         if (success) {
-          this.$http.post("author/", campos).then((response) => {
+          this.$http.put("author/", campos).then((response) => {
             alert("DEU CERTO");
           });
         }

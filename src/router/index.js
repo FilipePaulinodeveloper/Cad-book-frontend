@@ -162,6 +162,21 @@ const router = new VueRouter({
     },
 
     {
+      path: '/Edit-autor',
+      name: 'edit-autor',
+      component: () => import('@/views/lista-e-cadastro/Autor/Edit-autor.vue'),
+      meta: {
+        pageTitle: 'Editar Autor',
+        breadcrumb: [
+          {
+            text: 'Editrar Autor',
+            active: true,
+          },
+        ],
+      },
+    },
+
+    {
       path: '/login',
       name: 'login',
       component: () => import('@/views/Login.vue'),

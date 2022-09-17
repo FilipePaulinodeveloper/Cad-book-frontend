@@ -48,50 +48,7 @@
                 </validation-provider>
               </b-form-group>
             </b-col>
-
-            <b-col md="6">
-              <b-form-group label="Autor" label-for="author">
-                <validation-provider
-                  #default="{ errors }"
-                  name="Autor"
-                  rules="required"
-                >
-                  <v-select
-                    id="author"
-                    multiple
-                    v-model="selectedAutor"
-                    :options="optionsAutores"
-                    :value="optionsAutores.name"
-                    :reduce="(optionsAutores) => optionsAutores.id"
-                    label="name"
-                  />
-                  <small class="text-danger">{{ errors[0] }}</small>
-                </validation-provider>
-              </b-form-group>
-            </b-col>
-
-            <b-col md="6">
-              <b-form-group label="Categoria" label-for="category">
-                <validation-provider
-                  #default="{ errors }"
-                  name="Categoria"
-                  rules="required"
-                >
-                  <v-select
-                    id="category"
-                    multiple
-                    v-model="selecteCategoria"
-                    :options="optionsCategorias"
-                    :value="optionsCategorias.name"
-                    :reduce="(optionsCategorias) => optionsCategorias.id"
-                    label="name"
-                  />
-
-                  <small class="text-danger">{{ errors[0] }}</small>
-                </validation-provider>
-              </b-form-group>
-            </b-col>
-
+            
             <b-col md="6">
               <validation-provider
                 #default="{ errors }"
