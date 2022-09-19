@@ -33,6 +33,7 @@
                     v-model="foto"
                     id="authorPhoto"
                     accept="image/*"
+                    @change="newFile"
                   />
                 </b-form-group>
                 <small class="text-danger">{{ errors[0] }}</small>
@@ -146,6 +147,12 @@ export default {
         }
       });
     },
+
+    newFile(event){
+      console.log(event)
+      this.file = event.target.files[0]
+    }
+
   },  
 };
 </script>

@@ -130,7 +130,7 @@ export default {
 
       this.$refs.simpleRules.validate().then((success) => {
         if (success) {
-          this.$http.post("author/", campos).then((response) => {  
+          this.$http.put("author/"+id , campos).then((response) => {  
            alert('deu certo')
           });
         }
