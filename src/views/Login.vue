@@ -194,6 +194,7 @@ import { required, email } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import store from '@/store/index'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import useJwt from '@/auth/jwt/useJwt'
 
 export default {
   components: {
@@ -252,6 +253,18 @@ export default {
             },
           })
         }
+      })
+    },
+    login() {
+      useJwt.login({
+        email: this.userEmail,
+        password: this.password,
+      })
+      .then(() => {
+        // Do something on success
+      })
+      .catch(() => {
+        // Do something on error
       })
     },
   },

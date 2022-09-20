@@ -175,6 +175,21 @@ const router = new VueRouter({
         ],
       },
     },
+
+    {
+      path: '/livro-autor/:id/books',
+      name: 'livro-autor',
+      component: () => import('@/views/lista-e-cadastro/Autor/livro-autor.vue'),
+      meta: {
+        pageTitle: 'Livros do autor',
+        breadcrumb: [
+          {
+            text: 'Livros do autor',
+            active: true,
+          },
+        ],
+      },
+    },
    
     {
       path: '/login',

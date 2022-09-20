@@ -130,10 +130,20 @@ export default {
 
       this.$refs.simpleRules.validate().then((success) => {
         if (success) {
-          this.$http.put("author/"+id , campos).then((response) => {  
-           alert('deu certo')
-          });
-        }
+          this.$http.put("author/"+id , campos)
+           .then((response) => {
+              this.$swal({
+                title: 'Autor Atualizado com sucesso!',
+                text: '',
+                icon: 'success',
+                customClass: {
+                  confirmButton: 'btn btn-primary',
+                },
+                buttonsStyling: false,
+              })     
+              this.$router.push('/Autor')         
+           })
+        }        
       });
     },
     

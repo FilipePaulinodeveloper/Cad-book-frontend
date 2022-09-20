@@ -18,13 +18,17 @@
                     lg="6"
                     sm="12"   
                 >             
+                
+               
                     <b-button
                         v-ripple.400="'rgba(113, 102, 240, 0.15)'"
                         variant="primary"
                         class="mt-1"
+                        :to="{name: 'livro-autor', params: { id:codigo } }"
                     >
-                        Ver mais
+                        Ver livros 
                     </b-button>
+             
 
                 </b-col>
 
@@ -123,11 +127,11 @@ export default {
     methods:{
         deletar(codigo) {                       
             this.$swal({            
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Você tem certeza?',
+                text: "Você não será capaz de reverter isso!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
+                confirmButtonText: 'Sim, exclua!',
                 customClass: {
                 confirmButton: 'btn btn-primary',
                 cancelButton: 'btn btn-outline-danger ml-1',
@@ -141,8 +145,8 @@ export default {
                     )       
                 this.$swal({
                     icon: 'success',
-                    title: 'Deleted!',
-                    text: 'Your file has been deleted.',
+                    title: 'Excluido!',
+                    text: 'O autor foi Excluido',
                     customClass: {
                     confirmButton: 'btn btn-success',
                     },

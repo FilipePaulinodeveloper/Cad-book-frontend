@@ -28,12 +28,12 @@
                 name="Foto do autor"
                 
               >
-                <b-form-group label="Foto do autor" label-for="authorPhoto">
+                <b-form-group label="Foto do autor" label-for="authorPhoto">                  
                   <b-form-file
                     v-model="foto"
                     id="authorPhoto"
-                    accept="image/*"
-                    @change="newFile"
+                    accept="image/*"                    
+                    @change="handleFileUpload"
                   />
                 </b-form-group>
                 <small class="text-danger">{{ errors[0] }}</small>
@@ -67,8 +67,9 @@
                 v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                 type="submit"
                 variant="primary"
-                class="mr-1"
+                class="mr-1"              
               >
+              
                 Enviar
               </b-button>
             </b-col>
@@ -124,35 +125,59 @@ export default {
     return {
       required,
 
-      nome: (this.nome = ""),
-      foto: (this.foto = ""),
-      descricao: (this.descricao = ""),    
+      // file: '',      
+      nome:'',
+      foto:'',
+      descricao:'',    
 
     };
   },
 
   methods: {
-    validationForm() {
+   validationForm() {
       var campos = {
         name: this.nome,
-        author_photo: this.foto,
+        author_photo: this.foto.name,
         description: this.descricao,       
       };
 
+        console.log(this.foto);
+
+        let formData = new FormData();
+        formData.append('author_photo', this.foto);    
+        
+
       this.$refs.simpleRules.validate().then((success) => {
         if (success) {
-          this.$http.post("author/", campos).then((response) => {
-            alert("DEU CERTO");
-          });
-        }
-      });
+          this.$http.post("author/", campos,
+           formData,
+              {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+              }
+
+          )
+          .then((response) => {
+              this.$swal({
+                title: 'Autor cadastrato com sucesso!',
+                text: '',
+                icon: 'success',
+                customClass: {
+                  confirmButton: 'btn btn-primary',
+                },
+                buttonsStyling: false,
+              })     
+              this.$router.push('/Autor')         
+           })
+        } 
+      })
+    
+      
     },
-
-    newFile(event){
-      console.log(event)
-      this.file = event.target.files[0]
-    }
-
+   handleFileUpload( event ){
+      console.log(event)      
+   },
   },  
 };
 </script>
