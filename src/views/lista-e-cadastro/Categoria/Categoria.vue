@@ -49,29 +49,7 @@
           </b-col>        
       </b-row>
 
-      <b-row class="match-height">  
-        <b-col
-          md="6"
-          lg="4"      
-          v-for="categoriaItem in categorias"
-          :key="categoriaItem.id"
-        >
-          
-          <CategoryComponnent
-              :categoria = 'categoriaItem'
-              :nome= 'categoriaItem.name'
-              :descricao= 'categoriaItem.description'
-              :foto = 'categoriaItem.category_photo'
-          />
-
-        </b-col>     
-        
-         
-
-      
-      </b-row>    
-
-      <div v-if="categorias == '' ">
+       <div v-if="categorias == '' ">
           <b-row class="d-flex justify-content-center">
                 <b-col 
                 md = "12"
@@ -104,6 +82,32 @@
               </b-row>          
           </div>      
  
+
+      <b-row class="match-height">  
+        <b-col
+          md="6"
+          lg="4"      
+          v-for="categoriaItem in categorias"
+          :key="categoriaItem.id"
+        >
+          
+          <CategoryComponnent
+              :codigo = 'categoriaItem.id'
+              :categoria = 'categoriaItem'
+              :nome= 'categoriaItem.name'
+              :descricao= 'categoriaItem.description'
+              :foto = 'categoriaItem.category_photo'
+              @afterDeleting = 'afterDeleting'
+          />
+
+        </b-col>
+        
+         
+
+      
+      </b-row>    
+
+     
      
 
       <!-- <b-table  
@@ -149,7 +153,7 @@ export default {
         
         {
           key: 'id',
-          label: 'Código',        
+          label: 'codigo',        
         }, 
         {
           key: 'name',
@@ -160,7 +164,7 @@ export default {
           label: 'descricao',        
         }, 
         {
-          key: 'author_photo',
+          key: 'category_photo',
           label: 'foto',        
         }, 
         
@@ -187,6 +191,13 @@ export default {
     .then(response => {    
       this.categorias = response.data.data
     })
+    },
+
+     afterDeleting(){
+       this.$http.get("category/")
+      .then(response => {     
+        this.categorias = response.data.data
+      })
     }
   },
 

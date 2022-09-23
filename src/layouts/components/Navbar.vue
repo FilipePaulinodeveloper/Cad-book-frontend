@@ -82,13 +82,13 @@
 
         <b-dropdown-divider />
 
-        <b-dropdown-item link-class="d-flex align-items-center">
+        <b-dropdown-item link-class="d-flex align-items-center" @click="logout">
           <feather-icon
             size="16"
             icon="LogOutIcon"
-            class="mr-50"
+            class="mr-50"            
           />
-          <span>Logout</span>
+          <span >Logout</span>
         </b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
@@ -112,6 +112,12 @@ export default {
 
     // Navbar Components
     DarkToggler,
+  },
+  methods:{
+    logout(){
+      localStorage.removeItem('token')
+      this.$router.replace('/login')    
+    }
   },
   props: {
     toggleVerticalMenuActive: {

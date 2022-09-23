@@ -175,6 +175,48 @@ const router = new VueRouter({
         ],
       },
     },
+    {
+      path: '/edit-categoria/:id',
+      name: 'edit-categoria',
+      component: () => import('@/views/lista-e-cadastro/Categoria/Edit-categoria.vue'),
+      meta: {
+        pageTitle: 'Editar Categoria',
+        breadcrumb: [
+          {
+            text: 'Editrar Categoria',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/edit-editora/:id',
+      name: 'edit-editora',
+      component: () => import('@/views/lista-e-cadastro/Editora/Edit-editora.vue'),
+      meta: {
+        pageTitle: 'Editar Editora',
+        breadcrumb: [
+          {
+            text: 'Editrar Editora',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/edit-livro/:id',
+      name: 'edit-livro',
+      component: () => import('@/views/lista-e-cadastro/Livro/Edit-livro.vue'),
+      meta: {
+        pageTitle: 'Editar Livro',
+        breadcrumb: [
+          {
+            text: 'Editrar Livro',
+            active: true,
+          },
+        ],
+      },
+    },
 
     {
       path: '/livro-autor/:id/books',

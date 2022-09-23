@@ -128,7 +128,7 @@
                 type="submit"
                 variant="primary"
                 block
-                @click="validationForm"
+                @click="login"
               >
                 Sign in
               </b-button>
@@ -241,32 +241,25 @@ export default {
     },
   },
   methods: {
-    validationForm() {
+    login() {
       this.$refs.loginValidation.validate().then(success => {
         if (success) {
-          this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Form Submitted',
-              icon: 'EditIcon',
-              variant: 'success',
-            },
+           useJwt.login({
+            email: this.userEmail,
+            password: this.password,
+          })
+          .then((response) => {                        
+            const token = `${response.data.authorisation.token}`         
+            useJwt.setToken(token);
+            this.$router.replace('/Livro')                                   
+          })  
+          .catch(() => {
+            // Do something on error
           })
         }
       })
     },
-    login() {
-      useJwt.login({
-        email: this.userEmail,
-        password: this.password,
-      })
-      .then(() => {
-        // Do something on success
-      })
-      .catch(() => {
-        // Do something on error
-      })
-    },
+    
   },
 }
 </script>

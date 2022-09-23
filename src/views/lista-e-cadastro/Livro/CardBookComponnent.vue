@@ -38,7 +38,7 @@
                             class=" btn-icon mt-1 mb-1"
                             v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                         >
-                            <router-link :to="{name: 'home'}" >     
+                            <router-link :to="{name: 'edit-livro', params: { id:codigo } }" >     
                                 <feather-icon icon="EditIcon" />
                             </router-link>          
 
@@ -54,10 +54,9 @@
                             variant="outline-primary"
                             class=" btn-icon mt-1 "
                             v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                        >                                                     
-                            <router-link :to="{name: 'home'}" >      
-                                <feather-icon icon="TrashIcon" />
-                            </router-link>
+                            @click="deletar(codigo)"
+                        >                                                                            
+                            <feather-icon icon="TrashIcon" />                            
                         </b-button>  
 
 <!-- 
@@ -113,10 +112,46 @@ export default {
    
 
     props:[
+        'codigo',
         'titulo',
         'sinopse',
         'capa'
     ],
+
+
+    methods:{
+        deletar(codigo) {                       
+            this.$swal({            
+                title: 'Você tem certeza?',
+                text: "Você não será capaz de reverter isso!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sim, exclua!',
+                customClass: {
+                confirmButton: 'btn btn-primary',
+                cancelButton: 'btn btn-outline-danger ml-1',
+                },
+                buttonsStyling: false,
+            }).then(result => {
+                if (result.value) {
+                    this.$http.delete("book/"+codigo)
+                    .then(
+                        this.$emit('afterDeleting')
+                    )       
+                this.$swal({
+                    icon: 'success',
+                    title: 'Excluido!',
+                    text: 'A Editora foi excluida',
+                    customClass: {
+                    confirmButton: 'btn btn-success',
+                    },
+                })
+                }
+            })
+          
+      
+        }
+    }
 
 }
 </script>

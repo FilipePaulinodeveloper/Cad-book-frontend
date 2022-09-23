@@ -188,16 +188,9 @@ export default {
   directives: {
     Ripple,
   },
-
   data() {
     return {
       required,
-      // titulo: this.titulo = '',
-      // capadolivro:this.capadolivro = '',
-      // sinopse: this.sinopse = '',
-      // selectedEditora: this.selectedEditora = '',
-      // selectedAutor: this.selectedAutor = '',
-      // selecteCategoria: this.selecteCategoria = '',
 
       titulo: (this.titulo = ""),
       pages: (this.pages = ""),
@@ -210,11 +203,13 @@ export default {
       optionsEditoras: [],
       optionsAutores: [],
       optionsCategorias: [],
+
     };
   },
 
   methods: {
-    validationForm() {
+    cadastrarAutor() {
+      let id =  router.currentRoute.params.id ;         
       var campos = {
         title: this.titulo,
         pages: this.pages,
@@ -227,9 +222,10 @@ export default {
 
       this.$refs.simpleRules.validate().then((success) => {
         if (success) {
-          this.$http.post("book/", campos).then((response) => {
+          this.$http.put("book/"+id , campos)
+           .then((response) => {
               this.$swal({
-                title: 'Livro cadastrado com sucesso!',
+                title: 'Editora Atualizada com sucesso!',
                 text: '',
                 icon: 'success',
                 customClass: {
@@ -237,25 +233,35 @@ export default {
                 },
                 buttonsStyling: false,
               })     
-              this.$router.push('/Livro')        
+              this.$router.push('/Livro')         
            })
-        }
+        }        
       });
     },
-  },
+    
+  },  
+  created()
+  {
+    let id =  router.currentRoute.params.id ;
+    this.$http.get("book/"+id)
+    .then(response => {    
+        this.titulo = response.data.data.title
+        this.pages = response.data.data.page
+        this.capadolivro = response.data.data.book_photo
+        this.sinopse = response.data.data.sinopse
+        this.selectedEditora = response.data.data.publishing_company_id
+        this.selectedAutor = response.data.data.author_id
+        this.selecteCategoria = response.data.data.category_id
+    })    
+    // this.$http.get("author/").then((response) => {
+    //     this.nome = response.data.data.name
+    //    this.foto = response.data.data.author_photo
+    //     this.descricao = response.data.data.description
+    // });
+  }
 
-  created() {
-    this.$http.get("publishCompany/").then((response) => {
-      this.optionsEditoras = response.data.data;
-    });
-    this.$http.get("author/").then((response) => {
-      this.optionsAutores = response.data.data;
-    });
-    this.$http.get("category/").then((response) => {
-      this.optionsCategorias = response.data.data;
-    });
-  },
 };
+
 </script>
 
 <style lang="scss">

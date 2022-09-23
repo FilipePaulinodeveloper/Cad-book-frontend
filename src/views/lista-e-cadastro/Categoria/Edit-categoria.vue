@@ -1,34 +1,32 @@
- 
 <template>
-  <div>    
+  <div>            
     <b-card>
       <validation-observer ref="simpleRules">
-        <b-form @submit.prevent="validationForm">
+        <b-form @submit.prevent="cadastrarAutor">
           <b-row>
             <b-col md="6">
-              <b-form-group label="Nome da Editora" label-for="nome">
+              <b-form-group label="Nome do autor" label-for="nome">
                 <validation-provider
                   #default="{ errors }"
-                  name="Nome da Editora"
+                  name="Nome do autor"
                   rules="required"
                 >
                   <b-form-input
                     v-model="nome"
-                    id="nome"
-                    placeholder="Nome da Editora"
+                    id="nome"                                                    
                   />
                   <small class="text-danger">{{ errors[0] }}</small>
                 </validation-provider>
               </b-form-group>
-            </b-col>            
-            
-            <b-col md="6">
+            </b-col>                        
+
+             <b-col md="6">
               <validation-provider
                 #default="{ errors }"
-                name="Foto da Editora"
+                name="Foto da Categoria"
                 
               >
-                <b-form-group label="Foto da Editora" label-for="authorPhoto">                  
+                <b-form-group label="Foto da Categoria" label-for="authorPhoto">                  
                   <b-form-file
                     v-model="foto"
                     id="authorPhoto"
@@ -39,19 +37,20 @@
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-col>
+            
 
             <b-col md="12">
-              <b-form-group label="Descricao da Editora" label-for="description">
+              <b-form-group label="Descricao do autor" label-for="description">
                 <div>
                   <validation-provider
                     #default="{ errors }"
-                    name="Descrição da Editora"
+                    name="Descrição do autor"
                     rules="required"
                   >
                     <b-form-textarea
                       v-model="descricao"
                       id="description"
-                      placeholder="Descrição da Editora"
+                      placeholder="Descrição do autor"
                       rows="3"
                       no-resize
                     />
@@ -67,9 +66,8 @@
                 v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                 type="submit"
                 variant="primary"
-                class="mr-1"              
+                class="mr-1"               
               >
-              
                 Enviar
               </b-button>
             </b-col>
@@ -96,6 +94,7 @@ import {
 } from "bootstrap-vue";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "@validations";
+import router from '@/router'
 import vSelect from "vue-select";
 
 import Ripple from "vue-ripple-directive";
@@ -116,6 +115,7 @@ export default {
     required,
     ValidationObserver,
     vSelect,
+    
   },
   directives: {
     Ripple,
@@ -125,34 +125,31 @@ export default {
     return {
       required,
 
-      // file: '',      
-      nome:'',
-      foto:'',
-      descricao:'',    
+      nome:"",
+       foto:"",
+      descricao:"",
+
+      categoria:[]
 
     };
   },
 
   methods: {
-   validationForm() {
+    cadastrarAutor() {
+      let id =  router.currentRoute.params.id ;         
       var campos = {
+        id: this.id,
         name: this.nome,
-        publishing_company_photo: this.foto.name,
-        description: this.descricao,       
+        category_photo: this.foto,
+        description: this.descricao,              
       };
-
-        // console.log(this.foto);
-
-        // let formData = new FormData();
-        // formData.append('author_photo', this.foto);    
-        
 
       this.$refs.simpleRules.validate().then((success) => {
         if (success) {
-          this.$http.post("publishCompany/", campos)
-          .then((response) => {
+          this.$http.put("category/"+id , campos)
+           .then((response) => {
               this.$swal({
-                title: 'Editora cadastrada com sucesso!',
+                title: 'Categoria Atualizada com sucesso!',
                 text: '',
                 icon: 'success',
                 customClass: {
@@ -160,18 +157,31 @@ export default {
                 },
                 buttonsStyling: false,
               })     
-              this.$router.push('/Editora')         
+              this.$router.push('/Categoria')         
            })
-        } 
-      })
-    
-      
+        }        
+      });
     },
-   handleFileUpload( event ){
-      console.log(event)      
-   },
+    
   },  
+  created()
+  {
+    let id =  router.currentRoute.params.id ;
+    this.$http.get("category/"+id)
+    .then(response => {    
+       this.nome = response.data.data.data.name
+        this.foto = response.data.data.data.category_photo
+        this.descricao = response.data.data.data.description
+    })    
+    // this.$http.get("author/").then((response) => {
+    //     this.nome = response.data.data.name
+    //    this.foto = response.data.data.author_photo
+    //     this.descricao = response.data.data.description
+    // });
+  }
+
 };
+
 </script>
 
 <style lang="scss">

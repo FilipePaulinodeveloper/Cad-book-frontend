@@ -58,11 +58,13 @@
             v-for="livroItem in livros"
             :key="livroItem.id"            
           >          
-            <CardBook 
+            <CardBook                 
+                :codigo="livroItem.id"
                 :livro = 'livroItem'
                 :titulo= 'livroItem.title'
                 :sinopse= 'livroItem.sinopse'
                 :capa = 'livroItem.book_photo'
+                @afterDeleting = 'afterDeleting'
             />
           </b-col>         
        </b-row>          
@@ -159,7 +161,7 @@ export default {
         
         {
           key: 'id',
-          label: 'Código',        
+          label: 'codigo',        
         }, 
         {
           key: 'title',
@@ -211,9 +213,16 @@ export default {
     .then(response => {    
       this.livros = response.data.data
     })
+    },
+    afterDeleting(){
+       this.$http.get("book/")
+      .then(response => {     
+        this.livros = response.data.data
+      })
     }
   },
 
+  
 
   created()
   {

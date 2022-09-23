@@ -63,10 +63,12 @@
         >
           
           <EditoraComponnent
+              :codigo = 'editoraItem.id'
               :editora = 'editoraItem'
               :nome= 'editoraItem.name'
               :descricao= 'editoraItem.description'
               :foto = 'editoraItem.publishing_company_photo'
+              @afterDeleting = 'afterDeleting'
           />
 
         </b-col>                 
@@ -151,7 +153,7 @@ export default {
         
         {
           key: 'id',
-          label: 'Código',        
+          label: 'codigo',        
         }, 
         {
           key: 'name',
@@ -191,6 +193,13 @@ export default {
       console.table(response.data.data)
       this.editoras = response.data.data
     })
+    },
+
+     afterDeleting(){
+       this.$http.get("publishCompany/")
+      .then(response => {     
+        this.editoras = response.data.data
+      })
     }
   },
 

@@ -1,10 +1,8 @@
- 
 <template>
-  <div>
-    {{pages}}
+  <div>   
     <b-card>
       <validation-observer ref="simpleRules">
-        <b-form @submit.prevent="validationForm">
+        <b-form @submit.prevent="editarLivro">
           <b-row>
             <b-col md="6">
               <b-form-group label="Titulo" label-for="title">
@@ -80,7 +78,7 @@
                   <v-select
                     id="category"
                     multiple
-                    v-model="selecteCategoria"
+                    v-model="selectedCategoria"
                     :options="optionsCategorias"
                     :value="optionsCategorias.name"
                     :reduce="(optionsCategorias) => optionsCategorias.id"
@@ -164,6 +162,7 @@ import {
 } from "bootstrap-vue";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "@validations";
+import router from '@/router'
 import vSelect from "vue-select";
 
 import Ripple from "vue-ripple-directive";
@@ -191,21 +190,15 @@ export default {
 
   data() {
     return {
-      required,
-      // titulo: this.titulo = '',
-      // capadolivro:this.capadolivro = '',
-      // sinopse: this.sinopse = '',
-      // selectedEditora: this.selectedEditora = '',
-      // selectedAutor: this.selectedAutor = '',
-      // selecteCategoria: this.selecteCategoria = '',
+      required,    
 
-      titulo: (this.titulo = ""),
-      pages: (this.pages = ""),
-      capadolivro: (this.capadolivro = ""),
-      sinopse: (this.sinopse = ""),
-      selectedEditora: (this.selectedEditora = ""),
-      selectedAutor: (this.selectedAutor = ""),
-      selecteCategoria: (this.selecteCategoria = ""),
+      titulo:  "",
+      pages:  "",
+      capadolivro: "",
+      sinopse: "",
+      selectedEditora: "",
+      selectedAutor: "",
+      selectedCategoria: "",
 
       optionsEditoras: [],
       optionsAutores: [],
@@ -214,22 +207,31 @@ export default {
   },
 
   methods: {
-    validationForm() {
+    editarLivro() {
+      let id =  router.currentRoute.params.id ;             
+
+      // const ids_autor = this.selectedAutor.map(autor => autor.id );
+      // //console.log(ids_autor)
+      // const ids_categoria = this.selectedCategoria.map(categoria => categoria.id );    
+      // //console.log(ids_categoria);
+
       var campos = {
         title: this.titulo,
-        pages: this.pages,
-        cover_type: this.capadolivro,
+        pages: this.pages,      
         sinopse: this.sinopse,
         publishing_company_id: this.selectedEditora,
         author_id: this.selectedAutor,
-        category_id: this.selecteCategoria,
+        category_id:this.selectedCategoria , 
+        // author_id: ids_autor,
+        // category_id: ids_categoria ,    
       };
 
-      this.$refs.simpleRules.validate().then((success) => {
+        this.$refs.simpleRules.validate().then((success) => {
         if (success) {
-          this.$http.post("book/", campos).then((response) => {
+          this.$http.put("book/"+id , campos)
+          .then((response) => {
               this.$swal({
-                title: 'Livro cadastrado com sucesso!',
+                title: 'Editora Atualizada com sucesso!',
                 text: '',
                 icon: 'success',
                 customClass: {
@@ -237,23 +239,38 @@ export default {
                 },
                 buttonsStyling: false,
               })     
-              this.$router.push('/Livro')        
-           })
-        }
-      });
+              this.$router.push('/Livro')         
+          })
+        }        
+      });   
     },
-  },
 
+  },
   created() {
+    let id =  router.currentRoute.params.id ;
+    this.$http.get("book/edit/"+id)
+    .then(response => {    
+      this.titulo = response.data.data.title
+        this.pages = response.data.data.pages
+        this.capadolivro = response.data.data.book_photo
+        this.sinopse = response.data.data.sinopse
+        this.selectedEditora = response.data.data.publishing_company_id
+        this.selectedAutor = response.data.data.author
+        this.selectedCategoria = response.data.data.category      
+    })         
+
     this.$http.get("publishCompany/").then((response) => {
       this.optionsEditoras = response.data.data;
     });
+
     this.$http.get("author/").then((response) => {
       this.optionsAutores = response.data.data;
     });
     this.$http.get("category/").then((response) => {
       this.optionsCategorias = response.data.data;
     });
+
+    
   },
 };
 </script>
